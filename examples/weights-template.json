@@ -1,0 +1,26 @@
+{
+  "rtk": {
+    "rms_scale": 1.0,
+    "min_sigma_m": 0.005,
+    "default_sigma_m": 0.03,
+    "float_policy": "exclude",
+    "downweight_factor": 3.0,
+    "reject_suspect_occupations": false,
+    "suspect_threshold": 4.0
+  },
+  "levels": {
+    "mm_per_sqrt_km": 3.0,
+    "min_sigma_m": 0.002,
+    "default_distance_km": 1.0
+  },
+  "angles": {
+    "arcseconds": 5.0
+  },
+  "distances": {
+    "mm": 2.0,
+    "ppm": 2.0
+  },
+  "datum_rename": {},
+  "datum_hold": null,
+  "overrides": []
+}

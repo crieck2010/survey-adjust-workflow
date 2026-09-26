@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "survey-adjust-workflow"
+version = "0.1.0"
+description = "Least-squares adjustment workflow for the land-surveying suite: user-weighted RTK means, level nets, traverse adjustment, blunder detection, justification reports"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [{ name = "Charles Rieck" }]
+keywords = ["surveying", "least-squares", "adjustment", "gnss", "traverse"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: GIS",
+]
+dependencies = [
+    "survey-adjust @ git+https://github.com/crieck2010/survey-adjust@bc144832aeddc77db9c73b7240c300f1774436a6",
+    "survey-field @ git+https://github.com/crieck2010/survey-field@v0.1.0",
+]
+
+[project.scripts]
+adjustflow = "adjustflow.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

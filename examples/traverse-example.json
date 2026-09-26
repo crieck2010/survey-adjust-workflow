@@ -1,0 +1,67 @@
+{
+  "stations": [
+    {
+      "id": "CTRL-A",
+      "easting": 1000.0,
+      "northing": 2000.0,
+      "fixed": true
+    },
+    {
+      "id": "CTRL-D",
+      "easting": 1000.0,
+      "northing": 2100.0,
+      "fixed": true
+    },
+    {
+      "id": "STA-B",
+      "easting": 1100.2,
+      "northing": 1999.7,
+      "fixed": false
+    },
+    {
+      "id": "STA-C",
+      "easting": 1099.8,
+      "northing": 2100.3,
+      "fixed": false
+    }
+  ],
+  "observations": [
+    {
+      "type": "distance",
+      "from": "CTRL-A",
+      "to": "STA-B",
+      "value_m": 100.002,
+      "id": "D1"
+    },
+    {
+      "type": "distance",
+      "from": "STA-B",
+      "to": "STA-C",
+      "value_m": 99.999,
+      "id": "D2"
+    },
+    {
+      "type": "distance",
+      "from": "STA-C",
+      "to": "CTRL-D",
+      "value_m": 100.001,
+      "id": "D3"
+    },
+    {
+      "type": "angle",
+      "at": "STA-B",
+      "from": "CTRL-A",
+      "to": "STA-C",
+      "value_deg": 89.9989,
+      "id": "A1"
+    },
+    {
+      "type": "angle",
+      "at": "STA-C",
+      "from": "STA-B",
+      "to": "CTRL-D",
+      "value_deg": 90.0011,
+      "id": "A2"
+    }
+  ]
+}

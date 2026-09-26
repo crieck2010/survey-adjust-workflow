@@ -1,0 +1,5 @@
+[
+  {"from_station": "BM-A", "to_station": "TP1", "delta_h_m": 1.2345, "distance_km": 0.42, "id": "L1"},
+  {"from_station": "TP1", "to_station": "TP2", "delta_h_m": -0.5120, "distance_km": 0.38, "id": "L2"},
+  {"from_station": "BM-A", "to_station": "TP2", "delta_h_m": 0.7210, "distance_km": 0.75, "id": "L3"}
+]
