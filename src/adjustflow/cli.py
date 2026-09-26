@@ -96,10 +96,21 @@ def _validity_checks(data: report_mod.ReportData) -> dict:
 
 
 def _sadj_points(data: report_mod.ReportData):
-    points = []
+    """Adjusted points, merged by name across paths.
+
+    The rtk, level-net, and traverse paths can all estimate the same
+    station (e.g. a rover point appears in the RTK weighted mean *and*
+    the level net). Emitting one entry per (path, station) produced
+    duplicate names, and downstream readers (survey-drafting) take
+    last-wins -- so the planimetric coordinates were lost whenever the
+    level-net entry came second. Merge instead: per component, the
+    first non-null value wins, in path order rtk -> traverse ->
+    level-net; sources are combined.
+    """
+    raw = []
     if data.rtk is not None:
         for p in data.rtk.points:
-            points.append({
+            raw.append({
                 "name": p.name, "easting": p.easting, "northing": p.northing,
                 "elevation": p.elevation, "sigma_e": p.sigma_e,
                 "sigma_n": p.sigma_n, "sigma_u": p.sigma_u,
@@ -108,19 +119,45 @@ def _sadj_points(data: report_mod.ReportData):
                 "sessions": p.sessions})
     if data.levelnet is not None:
         for s in data.levelnet.points:
-            points.append({
+            raw.append({
                 "name": s["station"], "easting": None, "northing": None,
                 "elevation": s["elevation"], "sigma_e": None,
                 "sigma_n": None, "sigma_u": s["std_dev"],
                 "source": "level-net"})
     if data.traverse is not None:
         for s in data.traverse.stations:
-            points.append({
+            raw.append({
                 "name": s["id"], "easting": s["easting"],
                 "northing": s["northing"], "elevation": None,
                 "sigma_e": s["sigma_e"], "sigma_n": s["sigma_n"],
                 "sigma_u": None, "source": "traverse",
                 "held": s["fixed"]})
+    merged: dict = {}
+    order: list = []
+    for pt in raw:
+        name = pt["name"]
+        if name not in merged:
+            merged[name] = dict(pt)
+            merged[name]["source"] = [pt["source"]]
+            order.append(name)
+            continue
+        cur = merged[name]
+        for key in ("easting", "northing", "elevation",
+                    "sigma_e", "sigma_n", "sigma_u"):
+            if cur.get(key) is None and pt.get(key) is not None:
+                cur[key] = pt[key]
+        if pt["source"] not in cur["source"]:
+            cur["source"].append(pt["source"])
+        for key in ("n_occupations", "sessions", "held"):
+            if key not in cur and key in pt:
+                cur[key] = pt[key]
+            elif key == "held" and pt.get("held"):
+                cur[key] = True
+    points = []
+    for name in order:
+        pt = merged[name]
+        pt["source"] = "+".join(pt["source"])
+        points.append(pt)
     return points
 
 

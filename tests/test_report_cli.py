@@ -126,3 +126,46 @@ def test_cli_weights_template(capsys):
     out = capsys.readouterr().out
     parsed = json.loads(out)
     assert parsed["distances"] == {"mm": 2.0, "ppm": 2.0}
+
+
+# --- v0.1.1 regression: _sadj_points merges duplicate station names ---
+def _fake_report_data():
+    from types import SimpleNamespace
+    rtk_pts = [SimpleNamespace(name="A", easting=1.0, northing=2.0,
+                               elevation=3.0, sigma_e=0.01, sigma_n=0.01,
+                               sigma_u=0.02, n_occupations=2,
+                               sessions=["s1", "s2"])]
+    rtk = SimpleNamespace(points=rtk_pts)
+    levelnet = SimpleNamespace(
+        points=[{"station": "A", "elevation": 3.001, "std_dev": 0.005},
+                {"station": "BM1", "elevation": 100.0, "std_dev": 0.0}])
+    return SimpleNamespace(rtk=rtk, levelnet=levelnet, traverse=None)
+
+
+def test_sadj_points_merge_duplicates():
+    from adjustflow import cli
+    pts = cli._sadj_points(_fake_report_data())
+    names = [p["name"] for p in pts]
+    assert sorted(names) == ["A", "BM1"]
+    a = {p["name"]: p for p in pts}["A"]
+    assert a["easting"] == 1.0 and a["northing"] == 2.0
+    assert a["elevation"] == 3.0  # first non-null (rtk) wins
+    assert a["sigma_u"] == 0.02
+    assert "rtk-weighted-mean" in a["source"]
+    assert "level-net" in a["source"]
+
+
+def test_sadj_points_missing_coord_filled():
+    from adjustflow import cli
+    from types import SimpleNamespace
+    rtk_pts = [SimpleNamespace(name="B", easting=None, northing=None,
+                               elevation=None, sigma_e=None, sigma_n=None,
+                               sigma_u=None, n_occupations=2,
+                               sessions=["s1"])]
+    data = SimpleNamespace(rtk=SimpleNamespace(points=rtk_pts),
+                           levelnet=SimpleNamespace(
+                               points=[{"station": "B", "elevation": 5.0,
+                                        "std_dev": 0.004}]),
+                           traverse=None)
+    pts = cli._sadj_points(data)
+    assert pts[0]["elevation"] == 5.0

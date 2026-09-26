@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "survey-adjust-workflow"
-version = "0.1.0"
+version = "0.1.1"
 description = "Least-squares adjustment workflow for the land-surveying suite: user-weighted RTK means, level nets, traverse adjustment, blunder detection, justification reports"
 readme = "README.md"
 license = { text = "MIT" }
