@@ -3,6 +3,24 @@
 All notable changes to this project follow [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-09-27
+
+### Changed
+- survey-field dependency pin bumped v0.1.0 -> v0.2.0 (packaging
+  metadata only). v0.2.0 is additive over v0.1.0 (new `field.reproject`
+  module, `crs_provenance` block); all 50 tests pass unchanged against
+  it. Weights editor, justification report, and adjustment behavior are
+  untouched.
+
+## [0.1.1] - 2026-09-26
+
+### Fixed
+- Duplicate station names in `.sadj.json` when running rtk+levels paths:
+  points are now merged by name across paths (first non-null component
+  wins, rtk -> traverse -> level-net; sources combined) so downstream
+  readers never lose planimetric coordinates to a later coordinate-less
+  entry.
+
 ## [0.1.0] - 2026-09-26
 
 ### Added

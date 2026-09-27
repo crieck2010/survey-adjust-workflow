@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "survey-adjust-workflow"
-version = "0.1.1"
+version = "0.1.2"
 description = "Least-squares adjustment workflow for the land-surveying suite: user-weighted RTK means, level nets, traverse adjustment, blunder detection, justification reports"
 readme = "README.md"
 license = { text = "MIT" }
@@ -19,7 +19,7 @@ classifiers = [
 ]
 dependencies = [
     "survey-adjust @ git+https://github.com/crieck2010/survey-adjust@bc144832aeddc77db9c73b7240c300f1774436a6",
-    "survey-field @ git+https://github.com/crieck2010/survey-field@v0.1.0",
+    "survey-field @ git+https://github.com/crieck2010/survey-field@v0.2.0",
 ]
 
 [project.scripts]
