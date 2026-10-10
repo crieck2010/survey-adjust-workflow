@@ -1,3 +1,7 @@
+> [!IMPORTANT]
+> **Consolidated into [SurveySuite](https://github.com/crieck2010/survey-suite)**  
+> This engine has been consolidated into the unified [SurveySuite monorepo](https://github.com/crieck2010/survey-suite). Active development, bug fixes, releases, and unified testing now live in `survey-suite`. This repository is preserved as an archive.
+
 # survey-adjust-workflow
 
 Least-squares adjustment workflow for the land-surveying suite — build #2
@@ -135,3 +139,4 @@ examples/         weights, traverse, and level-obs examples
 ## License
 
 MIT — Charles Rieck.
+
